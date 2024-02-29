@@ -1,0 +1,24 @@
+﻿
+@model EmpDataWithBrnchListColorTempDateViewModel
+@{
+    ViewData["Title"] = "DEtailsWithVM";
+}
+
+<h1>DEtailsWithVM</h1>
+
+<h2 style="color:@Model.Color">@Model.EmpName</h2>
+@(Model.Temp+10)
+<select class="form form-control">
+    @foreach (var item in Model.Brcnches)
+    {
+        <option>@item</option>
+    }
+</select>
+
+
+
+<!--Strong Type-->
+@* @using CompanyPro.ViewModels
+@model EmpDataWithBrnchListColorTempDateViewModel *@
+
+@* @model CompanyPro.ViewModels.EmpDataWithBrnchListColorTempDateViewModel *@

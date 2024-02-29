@@ -12,7 +12,7 @@ namespace CompanyPro.Controllers
             List<Student> StudentsModel= bl.GetAll();
 
             //send data view
-            return View("ShowAll",StudentsModel);//View name=ShowAll ,send Model (List<student>)
+            return View("ShowAll", StudentsModel);//View name=ShowAll ,send Model (List<student>)
         }
         //student/details/1
         //student/details?id=1
