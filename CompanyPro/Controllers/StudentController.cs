@@ -7,6 +7,7 @@ namespace CompanyPro.Controllers
     {
         public IActionResult All()
         {
+            
             //ask model
             StudentBL bl = new StudentBL();
             List<Student> StudentsModel= bl.GetAll();

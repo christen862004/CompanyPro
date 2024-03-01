@@ -1,4 +1,6 @@
-﻿namespace CompanyPro.Models
+﻿using Microsoft.DiaSymReader;
+
+namespace CompanyPro.Models
 {
     public class testClass
     {
@@ -41,5 +43,15 @@
                 return NAme;
             }
         }
+        public void Method1()
+        {
+            Method2();
+            //
+        }
+        public void Method2()
+        {
+            //Method3();
+        }
+        
     }
 }
