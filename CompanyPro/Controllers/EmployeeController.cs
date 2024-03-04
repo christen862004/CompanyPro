@@ -7,6 +7,7 @@ namespace CompanyPro.Controllers
     public class EmployeeController : Controller
     {
         ITIContext context = new ITIContext();
+
         public IActionResult DEtails(int id)
         {
             //Send Extra Info FRom C#(Action) To View
@@ -57,6 +58,57 @@ namespace CompanyPro.Controllers
             empVM.Temp = 20;
             //return view with VM
             return View("DEtailsWithVM",empVM);
+        }
+
+        public IActionResult Index()
+        {
+            List<Employee> empsListModel = context.Employee.ToList();
+            return View("Index", empsListModel);
+        }
+        //Employee/Edit/1
+        public IActionResult Edit(int id)
+        {
+            //get 
+            Employee EmpModel= context.Employee.FirstOrDefault(e => e.Id == id);
+            //create
+            EmployeeWithDeptListViewModel EmpVm = 
+                new EmployeeWithDeptListViewModel();
+            //Map
+            EmpVm.Name = EmpModel.Name;
+            EmpVm.Id = EmpModel.Id; 
+            EmpVm.Salary = EmpModel.Salary;
+            EmpVm.Address = EmpModel.Address;
+            EmpVm.jobTitle = EmpModel.jobTitle;
+            EmpVm.DepartmentId = EmpModel.DepartmentId;
+            EmpVm.ImageURl = EmpModel.ImageURl;
+          //-------------------------------------------
+            EmpVm.Departments = context.Department.ToList();
+
+            //view Edit
+            return View("Edit", EmpVm);//View Edit ,Model = EmployeeWithDeptListViewModel
+        }
+        [HttpPost]
+        public IActionResult SaveEdit(EmployeeWithDeptListViewModel empvm)
+        {
+            if(empvm.Name!=null)
+            {
+                Employee EmpModel =
+                    context.Employee.FirstOrDefault(e => e.Id == empvm.Id);
+                EmpModel.Name = empvm.Name;
+                EmpModel.Salary = empvm.Salary;
+                EmpModel.DepartmentId = empvm.DepartmentId;
+                EmpModel.jobTitle = empvm.jobTitle;
+                EmpModel.ImageURl = empvm.ImageURl;
+                EmpModel.Address = empvm.Address;
+                //  context.Employee.Update(EmpModel);
+                //map 
+                //context.Update(empvm);
+                context.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            
+            empvm.Departments=context.Department.ToList();
+            return View("Edit", empvm);
         }
     }
 }
