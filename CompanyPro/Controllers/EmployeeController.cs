@@ -7,8 +7,34 @@ namespace CompanyPro.Controllers
     public class EmployeeController : Controller
     {
         ITIContext context = new ITIContext();
+        //press link
+        public IActionResult New()
+        {
+            //Employee(Model) +List<department>   ==>ViewDta -viewbag -viewModel
+            ViewData["Depts"] = context.Department.ToList();
+            return View("New");
+        }
 
-        public IActionResult DEtails(int id)
+        //click on submit button
+        [HttpPost]
+        public IActionResult SaveNEw(Employee  Emp)
+        {
+            if(Emp.Name!=null && Emp.Salary > 6000)
+            {
+                context.Add(Emp);
+                context.SaveChanges();
+                return RedirectToAction("Index");
+            }
+
+            ViewData["Depts"] = context.Department.ToList();
+            return View("New", Emp);
+        }
+
+
+
+
+
+        public IActionResult DEtails(int id,int age)
         {
             //Send Extra Info FRom C#(Action) To View
             

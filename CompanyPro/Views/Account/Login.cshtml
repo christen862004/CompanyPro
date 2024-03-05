@@ -1,0 +1,20 @@
+﻿@model UserVM
+@{
+    ViewData["Title"] = "Login";
+}
+
+<h1>Login</h1>
+<!--Account/Login  (Get)-->
+<!--Account/Login  (post)-->
+<form method="post">
+    <div>
+        <label asp-for="Username"></label>
+        <input class="form form-control" asp-for="Username" />
+    </div>
+    <div>
+        <label asp-for="Passwrod"></label>
+        <input class="form form-control" asp-for="Passwrod" />
+    </div>
+    <input type="submit" class="btn btn-danger" value="login"/>
+    <!--Generate toke Hidden field-->
+</form>

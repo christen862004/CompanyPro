@@ -1,4 +1,5 @@
 ﻿using CompanyPro.Models;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CompanyPro.ViewModels
@@ -8,7 +9,11 @@ namespace CompanyPro.ViewModels
         //Model Employee Edit
         public int Id { get; set; }
         public string Name { get; set; }
+
+        [Display(Name="Current Address")]
+        //[DataType(DataType.Password)]
         public string Address { get; set; }
+
         public int Salary { get; set; }
         public string? ImageURl { get; set; }
         public string? jobTitle { get; set; }
