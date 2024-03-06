@@ -7,6 +7,24 @@ namespace CompanyPro.Controllers
     public class EmployeeController : Controller
     {
         ITIContext context = new ITIContext();
+        //Employee/CheckSalary?Salary=1000&JobTitle=Instructor
+        public IActionResult CheckSalary(int Salary,string jobTitle)
+        {
+            //logic db - business
+            if (Salary > 6000 && jobTitle == "Instructor")
+                return Json(true);
+            else if(Salary > 10000 && jobTitle == "Manager")
+                return Json(true);
+            return Json(false);
+        }
+
+
+
+
+
+
+
+
         //press link
         public IActionResult New()
         {
@@ -19,7 +37,8 @@ namespace CompanyPro.Controllers
         [HttpPost]
         public IActionResult SaveNEw(Employee  Emp)
         {
-            if(Emp.Name!=null && Emp.Salary > 6000)
+            //if(Emp.Name!=null && Emp.Salary > 6000)
+            if(ModelState.IsValid==true)//C#
             {
                 context.Add(Emp);
                 context.SaveChanges();
@@ -29,10 +48,6 @@ namespace CompanyPro.Controllers
             ViewData["Depts"] = context.Department.ToList();
             return View("New", Emp);
         }
-
-
-
-
 
         public IActionResult DEtails(int id,int age)
         {
