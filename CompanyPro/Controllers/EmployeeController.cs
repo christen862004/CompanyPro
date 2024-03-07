@@ -7,6 +7,21 @@ namespace CompanyPro.Controllers
     public class EmployeeController : Controller
     {
         ITIContext context = new ITIContext();
+
+        
+
+
+        public IActionResult EmpCardPartial(int id)
+        {
+            Employee emp = context.Employee.FirstOrDefault(e => e.Id == id);
+            //return partial
+            return PartialView("_EmployeeCardPartial",emp);//view =_EmployeeCardPartial ,Model=
+        }
+
+
+
+
+
         //Employee/CheckSalary?Salary=1000&JobTitle=Instructor
         public IActionResult CheckSalary(int Salary,string jobTitle)
         {
@@ -17,13 +32,6 @@ namespace CompanyPro.Controllers
                 return Json(true);
             return Json(false);
         }
-
-
-
-
-
-
-
 
         //press link
         public IActionResult New()
@@ -40,9 +48,18 @@ namespace CompanyPro.Controllers
             //if(Emp.Name!=null && Emp.Salary > 6000)
             if(ModelState.IsValid==true)//C#
             {
-                context.Add(Emp);
-                context.SaveChanges();
-                return RedirectToAction("Index");
+                try
+                {
+                    context.Add(Emp);
+                    context.SaveChanges();
+                    return RedirectToAction("Index");
+                }catch(Exception ex)
+                {
+                    //send ex message to view as error inside modelstate
+                    ModelState.AddModelError("DepartmentId", "Please Select Department");
+                    //ModelState.AddModelError("", ex.Message);
+                   // ModelState.AddModelError("", ex.InnerException.Message);
+                }
             }
 
             ViewData["Depts"] = context.Department.ToList();
@@ -74,6 +91,18 @@ namespace CompanyPro.Controllers
             Employee EmpModel = context.Employee.FirstOrDefault(e => e.Id == id);
             return View("Details",EmpModel);
         }
+        public IActionResult Delete(int id)
+        {
+            Employee EmpModel = context.Employee.FirstOrDefault(e => e.Id == id);
+            return View("Delete", EmpModel);
+        }
+
+
+
+
+
+
+
 
         public IActionResult DEtailsWithVM(int id)
         {
@@ -101,11 +130,23 @@ namespace CompanyPro.Controllers
             return View("DEtailsWithVM",empVM);
         }
 
+
+
+
+
+
+
         public IActionResult Index()
         {
             List<Employee> empsListModel = context.Employee.ToList();
             return View("Index", empsListModel);
         }
+
+
+
+
+
+
         //Employee/Edit/1
         public IActionResult Edit(int id)
         {

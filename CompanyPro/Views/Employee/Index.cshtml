@@ -10,6 +10,7 @@
         <th>Id</th>
         <th>Neme</th>
         <th></th>
+        <th></th>
     </tr>
     @foreach (var item in Model)
     {
@@ -17,7 +18,30 @@
             <td>@item.Id</td>
             <td>@item.Name</td>
             <td><a href="/Employee/Edit/@item.Id">Edit</a></td>
+            <td><a href="/Employee/EmpCardPartial/@item.Id">Show Card</a></td>
+            <td><a href="#" onclick="ShowEmpData(@item.Id)">Show Card Ajax</a></td>
+
 
         </tr>
     }
 </table>
+<div id="div1" style="border:blue solid 5px">
+
+</div>
+@section Scripts{
+<!--impoert jqquery libaray-->
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+
+<script>
+    function ShowEmpData(EmpId) {
+        event.preventDefault(); //dont execute href
+        //ajax call uel partial view
+        $.ajax({
+            url: "/Employee/EmpCardPartial/" + EmpId,
+            success: function (result) {//data
+                    $("#div1").html(result);
+                }
+            });
+    }
+</script>
+}

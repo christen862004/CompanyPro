@@ -6,8 +6,31 @@
 
 <h1>DEtails</h1>
 <h1 style="color:@ViewData["clr"]">@Model.Name</h1>
+
+<partial name="_EmployeeCardPartial" model="Model" />
+<!--Model type Employee-->
+
+
+<hr />
+<a href="/Employee/Index">back To list</a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <!--Extra info-->
-@ViewData["Msg"]
+@* @ViewData["Msg"]
 @ViewBag.Msg
 
 
@@ -31,3 +54,4 @@
 </select>
 
 
+ *@

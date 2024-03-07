@@ -8,6 +8,22 @@ namespace CompanyPro.Controllers
     {
         ITIContext context = new ITIContext();
 
+        public IActionResult GetDepartmentsEmps() {
+            List<Department> departments = context.Department.ToList();
+            return View("ShowDEpartments",departments);//view ShowDEpartments ,Model List<department>
+        }
+
+
+        //Department/ShowEmpsPerDepartment?deptID=1
+        public IActionResult ShowEmpsPerDepartment(int deptID)
+        {
+            List<Employee> employees = context.Employee.Where(e=>e.DepartmentId==deptID).ToList();
+            return Json(employees);/*Data*/
+        }
+
+
+
+
         public IActionResult Index()
         {
             List<Department> DeptListModel=

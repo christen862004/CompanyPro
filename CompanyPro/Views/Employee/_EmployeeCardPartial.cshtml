@@ -1,0 +1,14 @@
+﻿@model Employee
+<div class="card" style="width:400px">
+    <img class="card-img-top" src="/Images/@Model.ImageURl" alt="Card image" style="width:150px">
+    <div class="card-body">
+        <h4 class="card-title">@Model.Name</h4>
+        <p class="card-text">@Model.Address</p>
+        <a asp-action="Edit" asp-controller="Employee" asp-route-id="@Model.Id"
+           class="btn btn-primary">Edit</a>
+    </div>
+</div>
+<!--Class :razorPage<dynamic>{
+ dynamic Model =view   
+}
+-->

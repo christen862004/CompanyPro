@@ -1,0 +1,46 @@
+﻿@model List<Department>
+@{
+    ViewData["Title"] = "ShowDEpartments";
+}
+
+<h1>ShowDEpartments</h1>
+
+<select name="DeptId" id="DeptId" 
+        class="form-check form-control"
+        onchange="GetEmp()">
+        <option value="0">--Select Departent--</option>
+        @foreach (var item in Model)
+        {
+            <option value="@item.Id">@item.Name</option>
+        }
+</select>
+<ul id="Emps">
+
+</ul>
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<script>
+    function GetEmp(){
+
+        //selected department
+        // document.getElementById("DeptId").value;
+        var deptID=$("#DeptId").val();
+        console.log(deptID);
+        $("#Emps").html("");
+
+        if (deptID != 0) {
+            //ajax call
+            $.ajax({
+                url: "/Department/ShowEmpsPerDepartment?deptID=" + deptID
+                , success: function (result) {
+                    
+                    for (let emp of result) {
+                        console.log(emp);
+                        $("#Emps").append("<li>" + emp.name + "</li>");
+                    }
+                }
+            });
+        }
+            //load ul
+    }
+
+</script>

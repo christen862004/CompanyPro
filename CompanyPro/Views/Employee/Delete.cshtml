@@ -1,0 +1,12 @@
+﻿@model Employee
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h1>Delete</h1>
+
+<partial name="_EmployeeCardPartial" model="Model"/>
+
+<hr />
+<a href="/Employee/Index">back To list</a>
+<a href="/Employee/ConfirmDelete/@Model.Id">Delete</a>

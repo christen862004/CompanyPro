@@ -8,6 +8,8 @@
 <h1>New</h1>
 
 <form asp-action="SaveNew" asp-controller="Employee" method="post">
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <!--MOdelSate All Error (Model Property or else) li-->
     <div>
         <label asp-for="Name"></label>
         <input class="form form-control" asp-for="Name"/>
@@ -41,8 +43,6 @@
                 asp-items="deptList"
                 > 
                 <option value="0">--Select Department--</option>
-               
-
         </select>
         <span asp-validation-for="DepartmentId" class="text-danger"></span>
     </div>
@@ -52,7 +52,4 @@
 
 <!--Add links JS Files-->
 
-
-<script src="~/lib/jquery/dist/jquery.min.js"></script>
-<script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
-<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script> 
+<partial name="_ValidationScriptsPartial" />
