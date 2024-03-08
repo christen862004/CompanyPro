@@ -1,4 +1,5 @@
 ﻿using CompanyPro.Models;
+using CompanyPro.Repository;
 using Microsoft.AspNetCore.Mvc;
 using System.Runtime.Intrinsics.Arm;
 
@@ -6,10 +7,20 @@ namespace CompanyPro.Controllers
 {
     public class DepartmentController : Controller
     {
-        ITIContext context = new ITIContext();
+        //ITIContext context = new ITIContext();
+        IDepartmentRepository DepartmentRepository;
+        IEmployeeRepository EmployeeRepository;
+        public DepartmentController
+            (IEmployeeRepository empRepo,IDepartmentRepository deptREpo)
+        {
+            DepartmentRepository = deptREpo;
+            EmployeeRepository = empRepo;
+            //DepartmentRepository = new DepartmentRepository();
+            //EmployeeRepository = new EmployeeRepository();
+        }
 
         public IActionResult GetDepartmentsEmps() {
-            List<Department> departments = context.Department.ToList();
+            List<Department> departments = DepartmentRepository.GetAll();
             return View("ShowDEpartments",departments);//view ShowDEpartments ,Model List<department>
         }
 
@@ -17,7 +28,8 @@ namespace CompanyPro.Controllers
         //Department/ShowEmpsPerDepartment?deptID=1
         public IActionResult ShowEmpsPerDepartment(int deptID)
         {
-            List<Employee> employees = context.Employee.Where(e=>e.DepartmentId==deptID).ToList();
+            List<Employee> employees = EmployeeRepository.GetByDepartmentID(deptID);
+               
             return Json(employees);/*Data*/
         }
 
@@ -26,8 +38,7 @@ namespace CompanyPro.Controllers
 
         public IActionResult Index()
         {
-            List<Department> DeptListModel=
-                context.Department.ToList();
+            List<Department> DeptListModel= DepartmentRepository.GetAll();
             return View("Index",DeptListModel);//View =Index ,Model Type=List<department>
         }
         //handel link Open view Empty
@@ -42,8 +53,9 @@ namespace CompanyPro.Controllers
         {
                 if (Dept.Name != null)
                 {
-                    context.Add(Dept);
-                    context.SaveChanges();
+                    DepartmentRepository.Insert(Dept);
+                    //update
+                    DepartmentRepository.Save();
 
                     // return View("Index",context.Department.ToList());//view indexx ,model null
                     return RedirectToAction("Index");//index name action

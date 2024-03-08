@@ -4,7 +4,14 @@ namespace CompanyPro.Models
 {
     public class ITIContext:DbContext
     {
-        public ITIContext():base() { }
+        public ITIContext():base() { }//call default
+
+        //class inject ITIContext
+        public ITIContext(DbContextOptions<ITIContext> options) : base(options)
+        {
+
+        }
+
         //Class MApping Table
         public DbSet<Employee> Employee { get; set; }
         public DbSet<Department> Department { get; set; }

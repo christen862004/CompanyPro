@@ -1,3 +1,7 @@
+using CompanyPro.Models;
+using CompanyPro.Repository;
+using Microsoft.EntityFrameworkCore;
+
 namespace CompanyPro
 {
     public class Program
@@ -6,15 +10,43 @@ namespace CompanyPro
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // Add services to the container.
+            // Add services to the container. (register service inside ioc container)
+            //Build in service already registered (90)
+           
+            //Built in service need register
             builder.Services.AddControllersWithViews();
             builder.Services.AddSession(options =>
             {
                 options.IdleTimeout = TimeSpan.FromMinutes(30);//session abort
             });
-            
-            var app = builder.Build();
 
+
+            builder.Services.AddDbContext<ITIContext>(options => {
+                options.UseSqlServer(builder.Configuration.GetConnectionString("cs"));
+            });
+
+            //register your custom service
+            builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
+            builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            //---------------------------------
+            var app = builder.Build();
+            //---------------------------------
             #region Custom Middleware
             //inline Middlew
             //app.Use(async (httpcontext, next) => {

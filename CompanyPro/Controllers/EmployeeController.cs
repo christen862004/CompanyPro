@@ -1,19 +1,34 @@
 ﻿using CompanyPro.Models;
+using CompanyPro.Repository;
 using CompanyPro.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CompanyPro.Controllers
 {
+    //ControllerFactory
+    //IOC - DIP - DI
     public class EmployeeController : Controller
     {
-        ITIContext context = new ITIContext();
+        //  ITIContext context = new ITIContext();
+        //DIP (high Class (Controller) base on abstration( interface)
+        IEmployeeRepository EmployeeRepository;
+        IDepartmentRepository DepartmentRepository;
+        //desgin patter :Depency Injection (dont create  but ask)
+        //DI
+        public EmployeeController(IEmployeeRepository empRepo, IDepartmentRepository depREpo)
+        {
+            EmployeeRepository = empRepo;
+            DepartmentRepository = depREpo;
+            
+            //EmployeeRepository = new EmployeeRepository();
+            //DepartmentRepository = new DepartmentRepository();
+        }
 
-        
 
 
         public IActionResult EmpCardPartial(int id)
         {
-            Employee emp = context.Employee.FirstOrDefault(e => e.Id == id);
+            Employee emp = EmployeeRepository.Get(id);
             //return partial
             return PartialView("_EmployeeCardPartial",emp);//view =_EmployeeCardPartial ,Model=
         }
@@ -37,7 +52,7 @@ namespace CompanyPro.Controllers
         public IActionResult New()
         {
             //Employee(Model) +List<department>   ==>ViewDta -viewbag -viewModel
-            ViewData["Depts"] = context.Department.ToList();
+            ViewData["Depts"] = DepartmentRepository.GetAll();
             return View("New");
         }
 
@@ -50,8 +65,8 @@ namespace CompanyPro.Controllers
             {
                 try
                 {
-                    context.Add(Emp);
-                    context.SaveChanges();
+                    EmployeeRepository.Insert(Emp);
+                    EmployeeRepository.Save();
                     return RedirectToAction("Index");
                 }catch(Exception ex)
                 {
@@ -62,7 +77,7 @@ namespace CompanyPro.Controllers
                 }
             }
 
-            ViewData["Depts"] = context.Department.ToList();
+            ViewData["Depts"] = DepartmentRepository.GetAll();
             return View("New", Emp);
         }
 
@@ -88,12 +103,12 @@ namespace CompanyPro.Controllers
 
             ViewBag.slr = 6000;//viewData["slr"]=1000
             ViewBag.clr = "blue";//ViewData["clr"]="blue"
-            Employee EmpModel = context.Employee.FirstOrDefault(e => e.Id == id);
+            Employee EmpModel = EmployeeRepository.Get(id);
             return View("Details",EmpModel);
         }
         public IActionResult Delete(int id)
         {
-            Employee EmpModel = context.Employee.FirstOrDefault(e => e.Id == id);
+            Employee EmpModel = EmployeeRepository.Get(id);
             return View("Delete", EmpModel);
         }
 
@@ -113,7 +128,7 @@ namespace CompanyPro.Controllers
             Branches.Add("Manofia");
 
             string msg = "aaa";
-            Employee EmpModel = context.Employee.FirstOrDefault(e => e.Id == id);
+            Employee EmpModel = EmployeeRepository.Get(id);
 
             //Create ViewModel
             EmpDataWithBrnchListColorTempDateViewModel empVM 
@@ -138,7 +153,7 @@ namespace CompanyPro.Controllers
 
         public IActionResult Index()
         {
-            List<Employee> empsListModel = context.Employee.ToList();
+            List<Employee> empsListModel = EmployeeRepository.GetAll();
             return View("Index", empsListModel);
         }
 
@@ -151,7 +166,7 @@ namespace CompanyPro.Controllers
         public IActionResult Edit(int id)
         {
             //get 
-            Employee EmpModel= context.Employee.FirstOrDefault(e => e.Id == id);
+            Employee EmpModel= EmployeeRepository.Get(id);
             //create
             EmployeeWithDeptListViewModel EmpVm = 
                 new EmployeeWithDeptListViewModel();
@@ -164,7 +179,7 @@ namespace CompanyPro.Controllers
             EmpVm.DepartmentId = EmpModel.DepartmentId;
             EmpVm.ImageURl = EmpModel.ImageURl;
           //-------------------------------------------
-            EmpVm.Departments = context.Department.ToList();
+            EmpVm.Departments =DepartmentRepository.GetAll();
 
             //view Edit
             return View("Edit", EmpVm);//View Edit ,Model = EmployeeWithDeptListViewModel
@@ -174,22 +189,14 @@ namespace CompanyPro.Controllers
         {
             if(empvm.Name!=null)
             {
-                Employee EmpModel =
-                    context.Employee.FirstOrDefault(e => e.Id == empvm.Id);
-                EmpModel.Name = empvm.Name;
-                EmpModel.Salary = empvm.Salary;
-                EmpModel.DepartmentId = empvm.DepartmentId;
-                EmpModel.jobTitle = empvm.jobTitle;
-                EmpModel.ImageURl = empvm.ImageURl;
-                EmpModel.Address = empvm.Address;
-                //  context.Employee.Update(EmpModel);
-                //map 
-                //context.Update(empvm);
-                context.SaveChanges();
+                //mapping wrong
+                Employee EmpModel =  EmployeeRepository.Get(empvm.Id);
+                EmployeeRepository.Update(EmpModel);
+                EmployeeRepository.Save();
                 return RedirectToAction("Index");
             }
             
-            empvm.Departments=context.Department.ToList();
+            empvm.Departments=DepartmentRepository.GetAll();
             return View("Edit", empvm);
         }
     }
