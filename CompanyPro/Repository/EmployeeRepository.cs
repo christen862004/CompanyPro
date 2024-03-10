@@ -1,4 +1,5 @@
 ﻿using CompanyPro.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace CompanyPro.Repository
 {
@@ -15,15 +16,17 @@ namespace CompanyPro.Repository
             return context.Employee.Where(e=>e.DepartmentId== deptId).ToList();
         }
         //get -find -insert -update -delete(CRUD)
-        public List<Employee> GetAll()
+        public List<Employee> GetAll()//string include=null)
         {
-            return context.Employee.ToList();
+            //context.Set<T>();
+            //return context.Set<Employee>().Include(include) .ToList();
+            return context.Set<Employee>().ToList();
         }
         public Employee Get(int id) {
-            return context.Employee.FirstOrDefault(e => e.Id == id);
+            return context.Set<Employee>().FirstOrDefault(e => e.Id == id);
         }
         public void Insert(Employee obj)
-        {
+        {   
             context.Add(obj);
         }
         public void Update(Employee obj)

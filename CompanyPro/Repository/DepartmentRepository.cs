@@ -13,16 +13,14 @@ namespace CompanyPro.Repository
             Id = Guid.NewGuid().ToString();
         }
 
-
-
         //get -find -insert -update -delete(CRUD)
         public List<Department> GetAll()
         {
-            return context.Department.ToList();
+            return context.Set<Department>().ToList();
         }
         public Department Get(int id)
         {
-            return context.Department.FirstOrDefault(e => e.Id == id);
+            return context.Set<Department>().Find(id);//.FirstOrDefault(e => e.Id == id);
         }
         public void Insert(Department obj)
         {

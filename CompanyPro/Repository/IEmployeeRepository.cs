@@ -6,8 +6,8 @@ namespace CompanyPro.Repository
     {
         public List<Employee> GetByDepartmentID(int deptId);
 
-        public List<Employee> GetAll();
-
+        public List<Employee> GetAll();// string include=null); //("DEpartment")
+        
         public Employee Get(int id);
 
         public void Insert(Employee obj);

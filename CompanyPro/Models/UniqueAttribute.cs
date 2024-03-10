@@ -10,11 +10,13 @@ namespace CompanyPro.Models
         protected override ValidationResult? IsValid
             (object? value, ValidationContext validationContext)
         {
+            
             string name = value.ToString();
             Employee EmpFromRequest = 
                 (Employee)validationContext.ObjectInstance;
             
-            ITIContext context = new ITIContext();
+            ITIContext context = validationContext.GetService<ITIContext>();
+
             Employee EmpFromDB= context.Employee
                 .FirstOrDefault(e => e.Name == name && e.DepartmentId==EmpFromRequest.DepartmentId);
             

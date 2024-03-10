@@ -12,14 +12,38 @@
                     <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                    <a class="nav-link text-dark"  asp-controller="Home" asp-action="Privacy">Privacy</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-dark" asp-area="" asp-controller="Employee" asp-action="Index">Employee</a>
+                    <a class="nav-link text-dark" asp-controller="Department" asp-action="Index">DEpartment</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link text-dark" asp-area="" asp-controller="Department" asp-action="Index">DEpartment</a>
-                </li>
+                @if (User.IsInRole("Admin") == true)
+                {
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" asp-controller="Role" asp-action="AddRole">Role</a>
+                    </li>
+                }
+                @if (User.Identity.IsAuthenticated == true)
+                {
+                    <li class="nav-item">
+                        <a class="nav-link text-dark"  asp-controller="Employee" asp-action="Index">Employee</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" asp-controller="Employee" asp-action="Index">
+                            Welcome Ya @User.Identity.Name</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" asp-controller="Account" asp-action="Signout">Logout</a>
+                    </li>
+                }else{
+               
+                    <li class="nav-item">
+                        <a class="nav-link text-dark"  asp-controller="Account" asp-action="Login">Loing</a>
+                    </li>                                              
+                    <li class="nav-item">                              
+                        <a class="nav-link text-dark"  asp-controller="Account" asp-action="Register">REgister</a>
+                    </li>                                              
+                }
             </ul>
         </div>
     </div>

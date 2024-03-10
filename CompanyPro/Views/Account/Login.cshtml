@@ -1,20 +1,43 @@
-﻿@model UserVM
+﻿@model CompanyPro.ViewModels.LoginViewModel
+
 @{
     ViewData["Title"] = "Login";
 }
 
 <h1>Login</h1>
-<!--Account/Login  (Get)-->
-<!--Account/Login  (post)-->
-<form method="post">
-    <div>
-        <label asp-for="Username"></label>
-        <input class="form form-control" asp-for="Username" />
+
+<h4>LoginViewModel</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Login">
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="UserName" class="control-label"></label>
+                <input asp-for="UserName" class="form-control" />
+                <span asp-validation-for="UserName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Password" class="control-label"></label>
+                <input asp-for="Password" class="form-control" />
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="RememberMe" /> @Html.DisplayNameFor(model => model.RememberMe)
+                </label>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Login" class="btn btn-primary" />
+            </div>
+        </form>
     </div>
-    <div>
-        <label asp-for="Passwrod"></label>
-        <input class="form form-control" asp-for="Passwrod" />
-    </div>
-    <input type="submit" class="btn btn-danger" value="login"/>
-    <!--Generate toke Hidden field-->
-</form>
+</div>
+
+<div>
+    <a asp-action="Register">Create Account</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -1,12 +1,16 @@
 ﻿using CompanyPro.Models;
 using CompanyPro.Repository;
 using CompanyPro.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace CompanyPro.Controllers
 {
     //ControllerFactory
     //IOC - DIP - DI
+
+    //[Authorize]
     public class EmployeeController : Controller
     {
         //  ITIContext context = new ITIContext();
@@ -23,24 +27,44 @@ namespace CompanyPro.Controllers
             //EmployeeRepository = new EmployeeRepository();
             //DepartmentRepository = new DepartmentRepository();
         }
+        [Authorize]
+        public IActionResult TestAuth()
+        {
+            //if(User.Identity.IsAuthenticated==true)
+            string name = User.Identity.Name;
+            //User.IsInRole("Admin");
+          
+            Claim idClaim= User.Claims
+                .FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier);
+            
+            string id = idClaim.Value;
+            return Content("Hello");  
+        }
 
 
 
+        [Authorize]//check cookie
+        public IActionResult Index()
+        {
+            List<Employee> empsListModel = EmployeeRepository.GetAll();
+            return View("Index", empsListModel);
+        }
+
+
+        //[AllowAnonymous]
         public IActionResult EmpCardPartial(int id)
         {
+            
             Employee emp = EmployeeRepository.Get(id);
             //return partial
             return PartialView("_EmployeeCardPartial",emp);//view =_EmployeeCardPartial ,Model=
         }
 
-
-
-
-
+        
         //Employee/CheckSalary?Salary=1000&JobTitle=Instructor
         public IActionResult CheckSalary(int Salary,string jobTitle)
-        {
-            //logic db - business
+        { 
+                //logic db - business
             if (Salary > 6000 && jobTitle == "Instructor")
                 return Json(true);
             else if(Salary > 10000 && jobTitle == "Manager")
@@ -147,15 +171,6 @@ namespace CompanyPro.Controllers
 
 
 
-
-
-
-
-        public IActionResult Index()
-        {
-            List<Employee> empsListModel = EmployeeRepository.GetAll();
-            return View("Index", empsListModel);
-        }
 
 
 
