@@ -22,6 +22,7 @@ namespace CompanyPro.Controllers
         [Route("M/{age:int}/{name?}")]//Attribute route
         public IActionResult MEthod3(int age)
         {
+            
             return Content("M2");
 
         }
